@@ -1,0 +1,6 @@
+{
+  "name": "Cognitive Fatigue Tracker",
+  "description": "A science-backed fatigue detection app using keystroke dynamics telemetry and hybrid AI/Statistical analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
