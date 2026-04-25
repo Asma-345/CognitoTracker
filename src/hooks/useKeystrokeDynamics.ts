@@ -3,6 +3,8 @@ import React, { useState, useCallback, useRef } from 'react';
 export interface KeystrokeMetrics {
   avgFlightTime: number;
   avgDwellTime: number;
+  stdDevFlightTime: number;
+  stdDevDwellTime: number;
   errorRate: number;
   totalKeystrokes: number;
   backspaces: number;
@@ -14,6 +16,8 @@ export const useKeystrokeDynamics = () => {
   const [metrics, setMetrics] = useState<KeystrokeMetrics>({
     avgFlightTime: 0,
     avgDwellTime: 0,
+    stdDevFlightTime: 0,
+    stdDevDwellTime: 0,
     errorRate: 0,
     totalKeystrokes: 0,
     backspaces: 0,
@@ -24,10 +28,18 @@ export const useKeystrokeDynamics = () => {
   const keyStartTimes = useRef<Record<string, number>>({});
   const lastKeyEndTime = useRef<number | null>(null);
 
+  const calculateStdDev = (arr: number[], mean: number) => {
+    if (arr.length < 2) return 0;
+    const variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / arr.length;
+    return Math.sqrt(variance);
+  };
+
   const resetMetrics = useCallback(() => {
     setMetrics({
       avgFlightTime: 0,
       avgDwellTime: 0,
+      stdDevFlightTime: 0,
+      stdDevDwellTime: 0,
       errorRate: 0,
       totalKeystrokes: 0,
       backspaces: 0,
@@ -82,11 +94,16 @@ export const useKeystrokeDynamics = () => {
         const avgDwell = newDwellTimes.reduce((a, b) => a + b, 0) / newDwellTimes.length;
         const avgFlight = prev.rawFlightTimes.reduce((a, b) => a + b, 0) / (prev.rawFlightTimes.length || 1);
         
+        const stdDevDwell = calculateStdDev(newDwellTimes, avgDwell);
+        const stdDevFlight = calculateStdDev(prev.rawFlightTimes, avgFlight);
+
         return {
           ...prev,
           rawDwellTimes: newDwellTimes,
           avgDwellTime: avgDwell,
-          avgFlightTime: avgFlight
+          avgFlightTime: avgFlight,
+          stdDevDwellTime: stdDevDwell,
+          stdDevFlightTime: stdDevFlight
         };
       });
     }

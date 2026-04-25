@@ -36,29 +36,39 @@ async function startServer() {
       const groq = new Groq({ apiKey: groqApiKey });
 
       const prompt = `
-        Analyze these two sets of keystroke dynamics data to detect cognitive fatigue.
+        Analyze these two sets of high-precision keystroke dynamics data to detect acute cognitive fatigue.
         
-        BASELINE (Rested):
-        - Avg Flight Time: ${baseline.avgFlightTime.toFixed(2)}ms
-        - Avg Dwell Time: ${baseline.avgDwellTime.toFixed(2)}ms
+        BASELINE (Rested State):
+        - Avg Flight Time (FT): ${baseline.avgFlightTime.toFixed(2)}ms (latency between keys)
+        - Avg Dwell Time (DT): ${baseline.avgDwellTime.toFixed(2)}ms (key depression duration)
+        - Std Dev FT: ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythm consistency)
+        - Std Dev DT: ${baseline.stdDevDwellTime.toFixed(2)}ms (motor precision)
         - Error Correction Rate: ${(baseline.errorRate * 100).toFixed(2)}%
         
-        CURRENT (Potential Fatigue):
-        - Avg Flight Time: ${current.avgFlightTime.toFixed(2)}ms
-        - Avg Dwell Time: ${current.avgDwellTime.toFixed(2)}ms
+        CURRENT (Capture Window):
+        - Avg Flight Time (FT): ${current.avgFlightTime.toFixed(2)}ms 
+        - Avg Dwell Time (DT): ${current.avgDwellTime.toFixed(2)}ms
+        - Std Dev FT: ${current.stdDevFlightTime.toFixed(2)}ms
+        - Std Dev DT: ${current.stdDevDwellTime.toFixed(2)}ms
         - Error Correction Rate: ${(current.errorRate * 100).toFixed(2)}%
         
+        Scientific Context: 
+        1. Increase in FT suggests cognitive slowed processing.
+        2. Increase in DT suggests neurological/physical fatigue (motor slowing).
+        3. Significant increase in Std Dev (variance) is a primary indicator of motor program degradation due to fatigue.
+        4. Error rate increases indicate loss of inhibitory control.
+
         Return ONLY a JSON response in this format:
         {
           "fatigueScore": number (0-100),
-          "primaryIndicator": string,
-          "scientificSummary": string,
-          "recommendation": string
+          "primaryIndicator": string (professional scientific term),
+          "scientificSummary": string (concise explanation of the delta in metrics),
+          "recommendation": string (actionable advice)
         }
       `;
 
       const chatCompletion = await groq.chat.completions.create({
-        messages: [{ role: "user", content: prompt }],
+        messages: [{ role: "system", content: "You are a professional neuro-ergonomics analyst specializing in motor kinetics and cognitive load assessment." }, { role: "user", content: prompt }],
         model: "llama3-8b-8192",
         response_format: { type: "json_object" },
       });
@@ -69,46 +79,51 @@ async function startServer() {
       strategy = "Local Statistical Engine (Fallback)";
       console.warn("Groq API failed or restricted, using fallback engine:", error);
 
-      // Scientific heuristic: Fatigue typically increases dwell time and error rates
-      // Flight time variance usually increases (slower responses)
       const dwellTimeDelta = (current.avgDwellTime - baseline.avgDwellTime) / baseline.avgDwellTime;
       const flightTimeDelta = (current.avgFlightTime - baseline.avgFlightTime) / baseline.avgFlightTime;
+      const stdDevFlightDelta = (current.stdDevFlightTime - baseline.stdDevFlightTime) / (baseline.stdDevFlightTime || 1);
       const errorRateDelta = current.errorRate - baseline.errorRate;
 
       let score = 0;
       let indicators = [];
 
-      // Dwell time: Muscles/nerves slow down, keys held longer
+      // Dwell time: Muscles/nerves slow down
       if (dwellTimeDelta > 0.15) {
-        score += 40;
-        indicators.push("Significant Dwell Time Increase");
+        score += 35;
+        indicators.push("Neuromuscular Slowing");
       } else if (dwellTimeDelta > 0.05) {
         score += 15;
-        indicators.push("Moderate Dwell Time Increase");
       }
 
-      // Flight time: Processing lag between thoughts/actions
+      // Flight time: Processing lag
       if (flightTimeDelta > 0.20) {
-        score += 35;
-        indicators.push("High Cognitive Latency");
+        score += 30;
+        indicators.push("Cognitive Processing Latency");
       } else if (flightTimeDelta > 0.10) {
         score += 15;
-        indicators.push("Mild Latency");
       }
 
-      // Error Rate: Loss of inhibitory control / focus
+      // Variance: Loss of rhythmic control (CRITICAL)
+      if (stdDevFlightDelta > 0.30) {
+        score += 30;
+        indicators.push("Rhythmic Decomposition");
+      } else if (stdDevFlightDelta > 0.15) {
+        score += 15;
+      }
+
+      // Error Rate
       if (errorRateDelta > 0.10) {
-        score += 25;
-        indicators.push("Elevated Error Correction");
+        score += 20;
+        indicators.push("Inhibitory Control Loss");
       }
 
       score = Math.min(Math.max(Math.round(score), 0), 100);
 
       result = {
         fatigueScore: score,
-        primaryIndicator: indicators[0] || "Stable Metrics",
-        scientificSummary: `Statistical analysis detected a ${Math.abs(Math.round(dwellTimeDelta * 100))}% shift in dwell times and ${Math.abs(Math.round(flightTimeDelta * 100))}% shift in flight latency compared to baseline environment.`,
-        recommendation: score > 50 ? "High fatigue detected. Immediate cognitive rest suggested." : "Metrics remain within safe operational bounds."
+        primaryIndicator: indicators[0] || "Homeostatic Stability",
+        scientificSummary: `Kinetics analysis indicates a ${Math.abs(Math.round(stdDevFlightDelta * 100))}% shift in rhythmic variability and ${Math.abs(Math.round(flightTimeDelta * 100))}% deviation in processing latency.`,
+        recommendation: score > 50 ? "Significant cognitive fatigue detected. Cease critical tasks immediately." : "Motor kinetics remain within baseline parameters."
       };
     }
 

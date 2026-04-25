@@ -1,6 +1,6 @@
 {
-  "name": "Cognitive Fatigue Tracker",
-  "description": "A science-backed fatigue detection app using keystroke dynamics telemetry and hybrid AI/Statistical analysis.",
+  "name": "Kinetic Scan",
+  "description": "Scientific neuro-ergonomic assessment tool utilizing keystroke dynamics to detect acute cognitive fatigue through motor-kinetic analysis.",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

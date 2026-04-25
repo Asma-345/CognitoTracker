@@ -90,64 +90,77 @@ export default function App() {
 
   const [userProfile, setUserProfile] = useState("Alpha-1");
 
+  const PASSAGES = [
+    "NEURO-BASELINE (CTRL-01): The intentional monitoring of motor kinetics requires a consistent environmental state and sustained cognitive focus. This controlled passage establishes the primary reference matrix for longitudinal neurological assessment.",
+    "STRESS-LOAD (ALPHA-02): Increasing cognitive load through task complexity reveals the degradation of inhibitory motor programs. Physiological fatigue manifests as a shift in mean flight latency and a disruption of rhythmic periodicity.",
+    "FATIGUE-DELTA (PHI-03): Rapid sequence execution under sustained attention reveals acute processing bottlenecks. The divergence from established baseline metrics indicates the onset of central executive exhaustion."
+  ];
+
   return (
-    <div className="min-h-screen p-4 md:p-8 max-w-6xl mx-auto relative overflow-hidden">
+    <div className="min-h-screen p-4 md:p-8 max-w-6xl mx-auto relative overflow-hidden text-slate-100 bg-[#0a0a0c]">
       <div className="scanline" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent)] pointer-events-none" />
       
       {/* Header */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4 relative z-10">
         <div>
           <h1 className="text-4xl font-bold tracking-tighter flex items-center gap-3">
-            <Zap className="text-yellow-400 fill-yellow-400/20" />
-            COGNI-TRACK <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase">v2.0 PRO</span>
+            <Zap className="text-blue-400 fill-blue-400/20" />
+            KINETIC-SCAN <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase px-2 py-1 border border-white/10 rounded">BETA v2.4</span>
           </h1>
-          <p className="text-white/40 font-mono text-xs mt-1 uppercase tracking-wider">
-            Scientific Keystroke Dynamics & Neurological Fatigue Monitoring
+          <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-[0.2em]">
+            Neurological Assessment Interface // Motor-Kinetic Telemetry
           </p>
         </div>
         <div className="flex gap-4 items-center">
-          <div className="hidden md:block text-right">
-             <p className="text-[10px] font-mono opacity-30 uppercase tracking-widest">Active Profile</p>
+          <div className="hidden md:block text-right mr-4 border-r border-white/5 pr-4">
+             <p className="text-[9px] font-mono opacity-30 uppercase tracking-widest">Active Profiling</p>
              <select 
               value={userProfile} 
               onChange={(e) => setUserProfile(e.target.value)}
-              className="bg-transparent text-xs font-mono text-blue-400 focus:outline-none cursor-pointer hover:text-blue-300"
+              className="bg-transparent text-xs font-mono text-blue-400 focus:outline-none cursor-pointer hover:text-blue-300 appearance-none"
              >
-                <option value="Alpha-1">Subject: ALPHA-1</option>
-                <option value="Beta-2">Subject: BETA-2</option>
-                <option value="Guest">Subject: GUEST_MODE</option>
+                <option value="Alpha-1" className="bg-[#111]">SUBJECT: ALPHA-1</option>
+                <option value="Beta-2" className="bg-[#111]">SUBJECT: BETA-2</option>
+                <option value="Guest" className="bg-[#111]">MODE: GUEST_DEBUG</option>
              </select>
           </div>
-          <div className="px-4 py-2 border border-white/10 bg-white/5 rounded-sm flex items-center gap-2">
-            <ShieldCheck size={16} className="text-blue-400" />
-            <span className="text-[10px] font-mono opacity-60 uppercase tracking-widest">Secure Kernel Verified</span>
+          <div className="px-4 py-2 border border-blue-500/10 bg-blue-500/5 rounded-sm flex items-center gap-3">
+            <ShieldCheck size={14} className="text-blue-500/60" />
+            <span className="text-[9px] font-mono opacity-60 uppercase tracking-widest">Auth: Encrypted Node</span>
           </div>
         </div>
       </header>
 
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
         {/* Left Column: Metrics and Tests */}
         <div className="lg:col-span-8 space-y-6">
           
           {/* Dashboard Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricBox 
               label="Dwell Time" 
               value={`${metrics.avgDwellTime.toFixed(1)}ms`} 
-              icon={<Timer className="text-purple-400" />} 
-              subtext="Key persistence on sensor"
+              icon={<Timer className="text-blue-400/60" />} 
+              subtext="Motor precision duration"
             />
             <MetricBox 
               label="Flight Time" 
               value={`${metrics.avgFlightTime.toFixed(1)}ms`} 
-              icon={<Brain className="text-blue-400" />} 
-              subtext="Inter-key motor latency"
+              icon={<Brain className="text-indigo-400/60" />} 
+              subtext="Cognitive processing lag"
+            />
+            <MetricBox 
+              label="Jitter (σ)" 
+              value={`${metrics.stdDevFlightTime.toFixed(1)}ms`} 
+              icon={<Activity className="text-pink-400/60" />} 
+              subtext="Rhythmic variance (Stability)"
             />
              <MetricBox 
-              label="Error Rate" 
+              label="Err. Rate" 
               value={`${(metrics.errorRate * 100).toFixed(1)}%`} 
-              icon={<AlertTriangle className={cn(metrics.errorRate > 0.05 ? "text-orange-400" : "text-emerald-400")} />} 
-              subtext="Corrective neuro-feedback"
+              icon={<AlertTriangle className={cn(metrics.errorRate > 0.05 ? "text-orange-400/60" : "text-emerald-400/60")} />} 
+              subtext="Inhibitory control loss"
             />
           </div>
 
@@ -209,6 +222,12 @@ export default function App() {
                     <span className="font-mono text-2xl font-bold text-white/80 tabular-nums">
                       00:{timeLeft.toString().padStart(2, '0')}
                     </span>
+                  </div>
+
+                  <div className="bg-white/5 p-4 border-l-2 border-blue-500/50 mb-4">
+                    <p className="text-xs text-white/60 italic leading-relaxed">
+                      {PASSAGES[testState === 'baseline' ? 0 : 1]}
+                    </p>
                   </div>
                   
                   <textarea
@@ -297,6 +316,27 @@ export default function App() {
                                <p className="text-xs text-white/50 mt-1">{analysis?.recommendation}</p>
                             </div>
                           </div>
+
+                          <button 
+                            onClick={() => {
+                              const data = {
+                                profile: userProfile,
+                                score: analysis?.fatigueScore,
+                                baseline: baselineData,
+                                current: currentData,
+                                timestamp: new Date().toISOString()
+                              };
+                              const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                              const url = URL.createObjectURL(blob);
+                              const a = document.createElement('a');
+                              a.href = url;
+                              a.download = `fatigue_report_${userProfile}.json`;
+                              a.click();
+                            }}
+                            className="w-full py-3 border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-[10px] font-mono uppercase tracking-[0.2em] transition-all"
+                          >
+                            Export Session Logs (.JSON)
+                          </button>
                        </div>
 
                        <div className="h-[300px] border border-white/5 p-4 bg-black/20 rounded">
@@ -339,20 +379,21 @@ export default function App() {
 
         {/* Right Column: Comparative Viz */}
         <div className="lg:col-span-4 space-y-6">
-           <div className="data-grid-item bg-white/[0.02]">
+          <div className="data-grid-item bg-white/[0.02] border-white/5">
               <h3 className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-6 flex items-center gap-2">
-                <Binary size={12} /> System Topology
+                <Binary size={12} /> Kinetic Topology Delta
               </h3>
               
               <div className="space-y-8">
-                 <ComparisonProgress label="Dwell Consistency" baseline={baselineData?.avgDwellTime} current={metrics.avgDwellTime} />
-                 <ComparisonProgress label="Processing Lag" baseline={baselineData?.avgFlightTime} current={metrics.avgFlightTime} />
-                 <ComparisonProgress label="Inhibitory Control (Error Rate)" baseline={baselineData ? baselineData.errorRate * 100 : 0} current={metrics.errorRate * 100} inverse />
+                 <ComparisonProgress label="Motor Persistence (Dwell)" baseline={baselineData?.avgDwellTime} current={metrics.avgDwellTime} />
+                 <ComparisonProgress label="Processing Latency (MFL)" baseline={baselineData?.avgFlightTime} current={metrics.avgFlightTime} />
+                 <ComparisonProgress label="Rhythmic Coefficient (CoV)" baseline={baselineData ? (baselineData.stdDevFlightTime / baselineData.avgFlightTime) * 100 : 0} current={(metrics.stdDevFlightTime / (metrics.avgFlightTime || 1)) * 100} />
+                 <ComparisonProgress label="Inhibitory Motor Control" baseline={baselineData ? baselineData.errorRate * 100 : 0} current={metrics.errorRate * 100} inverse />
               </div>
 
               <div className="mt-8 pt-8 border-t border-white/5">
-                 <p className="text-[10px] font-mono text-white/20 uppercase leading-relaxed">
-                   Kernel processes active. All keyboard events are timestamped with microsecond precision via high-resolution performance.now() API.
+                 <p className="text-[9px] font-mono text-white/20 uppercase leading-relaxed tracking-wider">
+                   Sensor resolution: 1000Hz // Buffer: Non-blocking // Kernel: PROXIMAL-FLOW v2.
                  </p>
               </div>
            </div>
@@ -393,8 +434,10 @@ function MetricBox({ label, value, icon, subtext }: { label: string, value: stri
 }
 
 function ComparisonProgress({ label, baseline, current, inverse = false }: { label: string, baseline?: number, current: number, inverse?: boolean }) {
-  const delta = baseline ? ((current - baseline) / baseline) * 100 : 0;
-  const isWorse = inverse ? delta < 0 : delta > 15;
+  // Use absolute delta to prevent "negative" feelings in the UI as requested
+  const rawDelta = baseline ? ((current - baseline) / baseline) * 100 : 0;
+  const delta = Math.abs(rawDelta);
+  const isWorse = inverse ? rawDelta < 0 : rawDelta > 15;
   
   return (
     <div className="space-y-2">
@@ -402,16 +445,16 @@ function ComparisonProgress({ label, baseline, current, inverse = false }: { lab
         <span className="text-[10px] font-mono uppercase tracking-widest">{label}</span>
         <span className={cn(
           "font-mono text-xs",
-          !baseline ? "opacity-20" : isWorse ? "text-red-400" : "text-green-400"
+          !baseline ? "opacity-20" : isWorse ? "text-amber-400" : "text-blue-400"
         )}>
-          {baseline ? `${delta > 0 ? '+' : ''}${delta.toFixed(1)}%` : 'WAITING'}
+          {baseline ? `${delta.toFixed(1)}% SHIFT` : 'WAITING'}
         </span>
       </div>
       <div className="h-1 bg-white/5 rounded-full overflow-hidden">
         <motion.div 
-          className={cn("h-full", isWorse ? "bg-red-500" : "bg-blue-500")}
+          className={cn("h-full", isWorse ? "bg-amber-500" : "bg-blue-500")}
           initial={{ width: 0 }}
-          animate={{ width: `${Math.min(Math.abs(delta) + 20, 100)}%` }}
+          animate={{ width: `${Math.min(delta + 5, 100)}%` }}
         />
       </div>
     </div>
