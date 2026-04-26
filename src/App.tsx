@@ -69,7 +69,7 @@ const NeuralTopology = ({ score }: { score: number }) => {
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-[10px] font-mono text-blue-400 opacity-50 uppercase tracking-tighter">Kinetic Topology</span>
+        <span className="text-[10px] font-mono text-blue-400 opacity-50 uppercase tracking-tighter">Your Typing Beat</span>
       </div>
     </div>
   );
@@ -287,9 +287,9 @@ export default function App() {
   const [userProfile, setUserProfile] = useState("Alpha-1");
 
   const PASSAGES = [
-    "NEURO-BASELINE (CTRL-01): The intentional monitoring of motor kinetics requires a consistent environmental state and sustained cognitive focus. This controlled passage establishes the primary reference matrix for longitudinal neurological assessment.",
-    "STRESS-LOAD (ALPHA-02): Increasing cognitive load through task complexity reveals the degradation of inhibitory motor programs. Physiological fatigue manifests as a shift in mean flight latency and a disruption of rhythmic periodicity.",
-    "FATIGUE-DELTA (PHI-03): Rapid sequence execution under sustained attention reveals acute processing bottlenecks. The divergence from established baseline metrics indicates the onset of central executive exhaustion."
+    "Learning to code is like learning a new language. At first, you might feel a bit slow as you look for the right brackets and semicolons, but soon your fingers develop a rhythm. This first test helps us understand your natural typing beat when you are feeling focused.",
+    "Sometimes, when we have been studying for a long time, our brain starts to wander. We might make more typos or pause a bit longer between letters. This second test will check if your current rhythm has changed from your normal baseline beat.",
+    "Great job! Now we are looking at how your speed and rhythm shifted. Small changes are normal, but big shifts usually mean it's time to step away from the screen and give your brain a little rest before you continue your work."
   ];
 
   return (
@@ -317,10 +317,10 @@ export default function App() {
         <div>
           <h1 className="text-4xl font-bold tracking-tighter flex items-center gap-3">
             <Zap className="text-blue-400 fill-blue-400/20" />
-            KINETIC-SCAN <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase px-2 py-1 border border-white/10 rounded">BETA v2.4</span>
+            Smart Rhythm Tracker <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase px-2 py-1 border border-white/10 rounded">STUDENT EDITION v1.0</span>
           </h1>
           <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-[0.2em]">
-            Neurological Assessment Interface // Motor-Kinetic Telemetry
+            Typing Focus Analyzer // Brain & Finger Sync
           </p>
         </div>
         <div className="flex gap-4 items-center">
@@ -350,28 +350,28 @@ export default function App() {
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricBox 
-              label="Dwell Time" 
+              label="Key Speed" 
               value={`${metrics.avgDwellTime.toFixed(1)}ms`} 
               icon={<Timer className="text-blue-400/60" />} 
-              subtext="Motor precision duration"
+              subtext="How fast you press 1 key"
             />
             <MetricBox 
-              label="Flight Time" 
+              label="Think Gap" 
               value={`${metrics.avgFlightTime.toFixed(1)}ms`} 
               icon={<Brain className="text-indigo-400/60" />} 
-              subtext="Cognitive processing lag"
+              subtext="Wait time between letters"
             />
             <MetricBox 
-              label="Jitter (σ)" 
+              label="Beat Rhythm" 
               value={`${metrics.stdDevFlightTime.toFixed(1)}ms`} 
               icon={<Activity className="text-pink-400/60" />} 
-              subtext="Rhythmic variance (Stability)"
+              subtext="How steady your beat is"
             />
              <MetricBox 
-              label="Err. Rate" 
+              label="Mistakes" 
               value={`${(metrics.errorRate * 100).toFixed(1)}%`} 
               icon={<AlertTriangle className={cn(metrics.errorRate > 0.05 ? "text-orange-400/60" : "text-emerald-400/60")} />} 
-              subtext="Inhibitory control loss"
+              subtext="Typos and corrections"
             />
           </div>
 
@@ -387,17 +387,16 @@ export default function App() {
                   className="flex-1 flex flex-col items-center justify-center text-center p-8"
                 >
                   <Activity size={48} className="text-white/20 mb-6 animate-pulse" />
-                  <h2 className="text-2xl font-semibold mb-2">Initialize Cognitive Scan</h2>
+                  <h2 className="text-2xl font-semibold mb-2">Check Your Focus</h2>
                   <p className="text-white/40 text-sm max-w-md mb-8">
-                    To detect fatigue, we first need a baseline of your rested state. 
-                    Then, perform the current test to identify cognitive degradation.
+                    Let's see if you're getting tired. First, we'll record your "Rested Beat," then we'll check your current rhythm.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
                     <button 
                       onClick={() => startTest('baseline')}
                       className="flex-1 px-6 py-3 border border-white/10 hover:border-white/40 bg-white/5 hover:bg-white/10 transition-all font-mono text-xs tracking-widest uppercase flex items-center justify-center gap-2"
                     >
-                      <RefreshCw size={14} /> 1. Start Baseline
+                      <RefreshCw size={14} /> 1. Record Normal Beat
                     </button>
                     <button 
                       onClick={() => baselineData ? startTest('current') : null}
@@ -409,12 +408,12 @@ export default function App() {
                           : "border-white/5 opacity-30 cursor-not-allowed"
                       )}
                     >
-                      <Activity size={14} /> 2. Current Test
+                      <Activity size={14} /> 2. Check My Sync
                     </button>
                   </div>
                   {!baselineData && (
                     <p className="text-[10px] uppercase tracking-widest text-orange-400/60 mt-4">
-                      * System requires baseline data for delta calculation
+                      * Start with step 1 to establish your base beat
                     </p>
                   )}
                 </motion.div>
@@ -613,11 +612,11 @@ export default function App() {
                           </div>
 
                           <div className="p-3 border border-blue-500/10 bg-blue-500/5 rounded font-mono text-[9px] text-blue-300/40">
-                             <p className="mb-1 border-b border-blue-500/10 pb-1 uppercase tracking-widest">Neural Watchdog Log</p>
+                             <p className="mb-1 border-b border-blue-500/10 pb-1 uppercase tracking-widest">System Status</p>
                              <ul className="space-y-1">
-                               <li>[SYS] Cross-Matrix Correlation: SUCCESS</li>
-                               <li>[SYNC] Proprioceptive Feedback: {Math.random() > 0.5 ? "STABLE" : "VAR_DETECTED"}</li>
-                               <li>[KERNEL] Proximal-Flow Inference: COMPLETE ({analysis?.strategy})</li>
+                               <li>[SYS] Typing Sensors: READY</li>
+                               <li>[SYNC] Hands Sync: {Math.random() > 0.5 ? "STABLE" : "VARIANCE"}</li>
+                               <li>[KERNEL] Analysis Method: {analysis?.strategy}</li>
                              </ul>
                           </div>
 

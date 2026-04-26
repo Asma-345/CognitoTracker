@@ -45,35 +45,26 @@ async function startServer() {
       const groq = new Groq({ apiKey: groqApiKey });
 
       const prompt = `
-        Perform a professional neuro-ergonomics analysis on these two high-precision motor-kinetic telemetry datasets. 
-        Your goal is to detect sub-clinical cognitive fatigue markers through kinetic topology shifts.
+        You are a friendly AI Typing Coach. Analyze these two typing sessions to see how focused the student is.
         
-        BASELINE (Homeostatic Reference):
-        - Avg Flight Time (FT): ${baseline.avgFlightTime.toFixed(2)}ms (latency between motor sequences)
-        - Avg Dwell Time (DT): ${baseline.avgDwellTime.toFixed(2)}ms (synaptic execution duration)
-        - Std Dev FT: ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythmic periodicity)
-        - Std Dev DT: ${baseline.stdDevDwellTime.toFixed(2)}ms (motor-program precision)
-        - Error Correction Rate: ${(baseline.errorRate * 100).toFixed(2)}%
+        SESSION 1 (Rested/Normal):
+        - Key Press Speed: ${baseline.avgDwellTime.toFixed(2)}ms
+        - Thinking Gaps: ${baseline.avgFlightTime.toFixed(2)}ms
+        - Rhythm Consistency: ${baseline.stdDevFlightTime.toFixed(2)}ms
         
-        CURRENT (Diagnostic Capture):
-        - Avg Flight Time (FT): ${current.avgFlightTime.toFixed(2)}ms 
-        - Avg Dwell Time (DT): ${current.avgDwellTime.toFixed(2)}ms
-        - Std Dev FT: ${current.stdDevFlightTime.toFixed(2)}ms
-        - Std Dev DT: ${current.stdDevDwellTime.toFixed(2)}ms
-        - Error Correction Rate: ${(current.errorRate * 100).toFixed(2)}%
+        SESSION 2 (Recent Performance):
+        - Key Press Speed: ${current.avgDwellTime.toFixed(2)}ms
+        - Thinking Gaps: ${current.avgFlightTime.toFixed(2)}ms
+        - Rhythm Consistency: ${current.stdDevFlightTime.toFixed(2)}ms
         
-        Clinical Context for AI:
-        1. Increase in FT indicates executive processing deceleration.
-        2. Increase in DT indicates neuromuscular fatigue or motor-cortex slowing.
-        3. Coefficient of Variation (CoV) shifts in FT denote rhythmic decomposition/jitter.
-        4. Transitory error rates reflect inhibitory motor control failure.
-
-        Return a JSON response with high-level professional medical-lite terminology:
+        Compare these sets. If the Thinking Gaps or Rhythm Consistency numbers are much higher in Session 2, the student is likely getting tired or distracted.
+        
+        Return a JSON response using simple, encouraging language:
         {
-          "fatigueScore": number (0-100),
-          "primaryIndicator": string (e.g., "Synaptic Latency Drift", "Motor Program Decomposition", "Homeostatic Baseline"),
-          "scientificSummary": string (Using professional terms like 'kinetic topology', 'processing bottleneck', 'rhythmic periodicity'),
-          "recommendation": string (actionable advice for high-stakes environments)
+          "fatigueScore": number (0-100, where 100 is very tired),
+          "primaryIndicator": string (e.g., "Slower Thinking Gaps", "Stable Rhythm", "Fast Fingers"),
+          "scientificSummary": string (1-2 sentences explaining why the score is what it is in simple terms),
+          "recommendation": string (actionable student advice like "Take a 5-minute water break" or "You're in the flow zone!")
         }
       `;
 

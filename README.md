@@ -1,58 +1,49 @@
-# KINETIC-SCAN: Neurological Telemetry Interface
-> **Diagnostic Motor-Kinetic Sensory System for Cognitive Fatigue Detection**
+# KINETIC-SCAN: Smart Rhythm Tracker
+> **A Fun, AI-Powered way to see how your brain and fingers work together!**
 
-[🚀 **Access Live Interface**](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
-
----
-
-## 🔬 Executive Summary
-**KINETIC-SCAN** is a high-precision neurological assessment tool that detects sub-clinical cognitive fatigue through keyboard interaction telemetry. By tracking motor-kinetic events at a resolution of 1ms, the system builds a unique "Kinetic Topology" for every user, identifying synaptic latency and motor-program degradation that precedes visible performance decline.
+[🚀 **Try the Live App**](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
 
 ---
 
-## 🏗️ System Architecture
-The application is built on a **Hybrid-Edge Sensor Architecture**, ensuring that diagnostic capabilities remain functional regardless of cloud availability.
+## 👋 What is Kinetic-Scan?
+Have you ever noticed that you type differently when you are tired versus when you are excited? **Kinetic-Scan** is a "Smart Sensor" app that tracks your typing rhythm to tell you how focused you are. 
 
+It's like a fitness tracker, but for your brain and fingers!
+
+---
+
+## 🏗️ How it Works (Simple Architecture)
+
+We built this using a **Three-Step Logic**:
+
+1.  **The Input (The Fingers):** As you type, the app measures the tiny gaps between your keys (in milliseconds!).
+2.  **The Server (The Math):** Our server calculates your average speed and rhythm.
+3.  **The AI (The Genius):** We send your data to an AI "Brain" (Llama-3) that reads your rhythm and tells you if you're in the "Flow Zone" or if you're getting tired.
+
+### 📊 System Diagram
 ```mermaid
-graph TD
-    A[User Keyboard Input] -->|1000Hz Sampling| B(Kinetic Sensor Interface)
-    B -->|Telemetry Deltas| C{Neural Coordinator}
-    C -->|Cloud Route| D[Llama-3 Neural Engine]
-    C -->|Offline Route| E[Local Edge Analytics]
-    D -->|Pattern Inference| F[Diagnostic Report]
-    E -->|Statistical Variance| F
-    F -->|Visual Feedback| G[Kinetic Topology Mapping]
+graph LR
+    User((You)) -->|Typing| UI[React App]
+    UI -->|Millisecond Data| Server[Node.js Server]
+    Server -->|Pattern Analysis| AI[Llama-3 AI]
+    AI -->|Simple Feedback| UI
+    UI -->|Rhythm Map| User
 ```
 
-### 1. Kinetic Sensor Interface (Front-End)
-*   **Precision Tracking:** Captures `Dwell Time` (key depression duration) and `Flight Time` (latency between keys) with micro-precision.
-*   **Visual Ergonomics:** Utilizes a high-contrast, low-latency UI to prevent secondary cognitive load during testing.
+---
 
-### 2. Neural Coordinator (Back-End)
-*   **Data Normalization:** Translates raw millisecond data into standardized neuro-ergonomic metrics.
-*   **Hybrid Logic:** Dynamically switches between Cloud AI and Local Statistics based on API health.
-
-### 3. Analysis Engines
-*   **Neural Engine:** Leverages Meta's Llama-3 (via Groq Cloud) to analyze rhythmic periodicity and motor-program decomposition.
-*   **Edge Engine:** Implements a mathematical fallback that measures Coefficient of Variation (CoV) shifts against a homeostatic baseline.
+## 🧠 What we measure
+*   **Key Press Speed:** How fast you press and release a single key.
+*   **Thinking Gaps:** The time you spend moving from one letter to the next.
+*   **Rhythm Score:** How consistent your typing "beat" is.
 
 ---
 
-## 🧠 Diagnostic Indicators
-| Metric | Clinical Basis | Significance |
-| :--- | :--- | :--- |
-| **Synaptic Jitter** | Rhythmic Periodicity | Primary indicator of acute cognitive fatigue. |
-| **Dwell Delta** | Neuromuscular Efficiency | Flags motor-cortex slowing or physical strain. |
-| **Flight Latency** | Executive Processing | Measures decision-making deceleration. |
-| **Inhibitory Failure** | Error Correction Rate | Detects loss of fine-motor control. |
+## 🎵 The Focus Sound
+We included a **432Hz Focus Tone**. Scientists and musicians often use this frequency because it helps people stay calm and focused. Before you start the test, listen to the tone for 10 seconds to "reset" your brain!
 
 ---
 
-## 🎧 Bio-Acoustic Calibration
-The interface integrates a **432Hz Bio-Pulse** harmonic resonator. This sensory focus-anchor is used to stabilize the user's autonomic nervous system prior to assessment, ensuring the highest possible accuracy for the homeostatic baseline.
-
----
-
-**Development Team:** Asma & Team  
-**Sector:** Neuro-Ergonomics / Cognitive Health  
-**Release:** v2.5.0-Stable
+**Created by:** Asma & Team  
+**Learning Focus:** Web Sensors + AI Logic  
+**Version:** 1.0 (Student Edition)
