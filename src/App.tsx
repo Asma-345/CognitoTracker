@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useKeystrokeDynamics, KeystrokeMetrics } from './hooks/useKeystrokeDynamics';
-import { Activity, Brain, Timer, ShieldCheck, AlertTriangle, RefreshCw, Zap, Binary } from 'lucide-react';
+import { Activity, Brain, Timer, ShieldCheck, AlertTriangle, RefreshCw, Zap, Binary, Info } from 'lucide-react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, AreaChart, Area } from 'recharts';
 import { cn } from './lib/utils';
 
@@ -660,11 +660,14 @@ export default function App() {
                          <div className="h-[300px] border border-white/5 p-4 bg-black/20 rounded flex-1">
                           <h4 className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-4">Dwell vs Flight Distribution (Current)</h4>
                           <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={currentData?.rawDwellTimes.slice(-20).map((d, i) => ({ 
-                              idx: i, 
-                              dwell: d, 
-                              flight: currentData?.rawFlightTimes[i] || 0 
-                            }))}>
+                            <AreaChart data={(currentData?.rawDwellTimes || []).slice(-20).map((d, i) => {
+                              const slicedFlights = (currentData?.rawFlightTimes || []).slice(-20);
+                              return { 
+                                idx: i, 
+                                dwell: d, 
+                                flight: slicedFlights[i] || 0 
+                              };
+                            })}>
                               <defs>
                                 <linearGradient id="colorDwell" x1="0" y1="0" x2="0" y2="1">
                                   <stop offset="5%" stopColor="#818cf8" stopOpacity={0.3}/>
