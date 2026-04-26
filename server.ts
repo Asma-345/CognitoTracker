@@ -24,7 +24,16 @@ async function startServer() {
       return res.status(400).json({ error: "Missing telemetry data" });
     }
 
-    const groqApiKey = process.env.GROQ_API_KEY;
+    // Enhanced Key Discovery (checks for various naming conventions)
+    const groqApiKey = process.env.GROQ_API_KEY || 
+                       process.env.VITE_GROQ_API_KEY || 
+                       process.env.GROQ_KEY ||
+                       process.env.API_KEY;
+
+    console.log(`[DEBUG] Neural Neural-Pipe Check:`);
+    console.log(` - GROQ_API_KEY: ${process.env.GROQ_API_KEY ? "CONFIGURED" : "MISSING"}`);
+    console.log(` - VITE_GROQ_API_KEY: ${process.env.VITE_GROQ_API_KEY ? "CONFIGURED" : "MISSING"}`);
+    
     let strategy = "AI Analytics (Llama 3)";
     let result;
 
@@ -36,34 +45,35 @@ async function startServer() {
       const groq = new Groq({ apiKey: groqApiKey });
 
       const prompt = `
-        Analyze these two sets of high-precision keystroke dynamics data to detect acute cognitive fatigue.
+        Perform a professional neuro-ergonomics analysis on these two high-precision motor-kinetic telemetry datasets. 
+        Your goal is to detect sub-clinical cognitive fatigue markers through kinetic topology shifts.
         
-        BASELINE (Rested State):
-        - Avg Flight Time (FT): ${baseline.avgFlightTime.toFixed(2)}ms (latency between keys)
-        - Avg Dwell Time (DT): ${baseline.avgDwellTime.toFixed(2)}ms (key depression duration)
-        - Std Dev FT: ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythm consistency)
-        - Std Dev DT: ${baseline.stdDevDwellTime.toFixed(2)}ms (motor precision)
+        BASELINE (Homeostatic Reference):
+        - Avg Flight Time (FT): ${baseline.avgFlightTime.toFixed(2)}ms (latency between motor sequences)
+        - Avg Dwell Time (DT): ${baseline.avgDwellTime.toFixed(2)}ms (synaptic execution duration)
+        - Std Dev FT: ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythmic periodicity)
+        - Std Dev DT: ${baseline.stdDevDwellTime.toFixed(2)}ms (motor-program precision)
         - Error Correction Rate: ${(baseline.errorRate * 100).toFixed(2)}%
         
-        CURRENT (Capture Window):
+        CURRENT (Diagnostic Capture):
         - Avg Flight Time (FT): ${current.avgFlightTime.toFixed(2)}ms 
         - Avg Dwell Time (DT): ${current.avgDwellTime.toFixed(2)}ms
         - Std Dev FT: ${current.stdDevFlightTime.toFixed(2)}ms
         - Std Dev DT: ${current.stdDevDwellTime.toFixed(2)}ms
         - Error Correction Rate: ${(current.errorRate * 100).toFixed(2)}%
         
-        Scientific Context: 
-        1. Increase in FT suggests cognitive slowed processing.
-        2. Increase in DT suggests neurological/physical fatigue (motor slowing).
-        3. Significant increase in Std Dev (variance) is a primary indicator of motor program degradation due to fatigue.
-        4. Error rate increases indicate loss of inhibitory control.
+        Clinical Context for AI:
+        1. Increase in FT indicates executive processing deceleration.
+        2. Increase in DT indicates neuromuscular fatigue or motor-cortex slowing.
+        3. Coefficient of Variation (CoV) shifts in FT denote rhythmic decomposition/jitter.
+        4. Transitory error rates reflect inhibitory motor control failure.
 
-        Return ONLY a JSON response in this format:
+        Return a JSON response with high-level professional medical-lite terminology:
         {
           "fatigueScore": number (0-100),
-          "primaryIndicator": string (professional scientific term),
-          "scientificSummary": string (concise explanation of the delta in metrics),
-          "recommendation": string (actionable advice)
+          "primaryIndicator": string (e.g., "Synaptic Latency Drift", "Motor Program Decomposition", "Homeostatic Baseline"),
+          "scientificSummary": string (Using professional terms like 'kinetic topology', 'processing bottleneck', 'rhythmic periodicity'),
+          "recommendation": string (actionable advice for high-stakes environments)
         }
       `;
 
@@ -76,8 +86,8 @@ async function startServer() {
       result = JSON.parse(chatCompletion.choices[0]?.message?.content || "{}");
     } catch (error) {
       // Fallback Strategy: Local Statistical Algorithm
-      strategy = "Local Statistical Engine (Fallback)";
-      console.warn("Groq API failed or restricted, using fallback engine:", error);
+      strategy = "Local Edge Analytics (Hybrid-Safe)";
+      console.warn("Groq API failed or restricted, using hybrid fallback:", error);
 
       const dwellTimeDelta = (current.avgDwellTime - baseline.avgDwellTime) / baseline.avgDwellTime;
       const flightTimeDelta = (current.avgFlightTime - baseline.avgFlightTime) / baseline.avgFlightTime;

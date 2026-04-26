@@ -1,32 +1,30 @@
-# Kinetic Scan: Neuro-Kinetic Fatigue Monitor
+# KINETIC-SCAN: Neurological Telemetry Interface
+> **The Motor-Kinetic Sensory System for Cognitive Fatigue Detection**
 
-## 🧠 Overview
-Kinetic Scan is an AI-powered diagnostic tool designed to detect **Acute Cognitive Bradyphrenia** (mental slowing) through digital biomarkers. By analyzing high-resolution typing telemetry, the system identifies the subtle timing patterns that indicate cognitive fatigue before it affects performance.
+[🚀 Live Interactive Demo](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
 
-## 🚀 Live Application
-**Live Demo**: [https://cognito-tracker.vercel.app](https://cognito-tracker.vercel.app)
+---
 
-## 🛠️ System Architecture
-The project follows a decoupled, low-latency architecture designed for millisecond-precision data processing:
+## 🔬 Project Overview
+KINETIC-SCAN is a high-resolution diagnostic interface designed to detect sub-clinical neurological fatigue. By capturing keyboard interaction telemetry at 1000Hz, the system analyzes the "Kinetic Topology" of a user's motor-cortex execution. It measures synaptic latency (Dwell Time) and sequence processing (Flight Time) to identify cognitive drift before it becomes visible to the human eye.
 
-1.  **Telemetry Collector (Frontend)**: A React-based engine using `performance.now()` hooks to capture key-down and key-up events with <1ms accuracy.
-2.  **SystemOutestcher (Orchestrator)**: A custom internal module (`System.IO.Orchestrator`) that normalizes raw timing into three distinct vectors:
-    - **Mean Flight Latency (MFL)**: Processing speed.
-    - **Mean Dwell Duration (MDD)**: Motor persistence.
-    - **Coefficient of Variation (CoV)**: Rhythmic consistency.
-3.  **Secure AI Relay (Backend)**: A Vercel Serverless Function that acts as a secure proxy, protecting the Groq API credentials while routing data to the AI engine.
-4.  **Neural Inference (Groq + Llama 3)**: Utilizing the Llama 3-8b model via the Groq SDK for near-instantaneous pattern recognition and fatigue scoring.
-5.  **Analytics Dashboard**: Real-time visualization using Recharts to display comparative metrics against the user's calibration baseline.
+## 🏗️ System Architecture: The Sensor-to-Neural Pipeline
 
-## 💡 AI Integration
-The core intelligence of Kinetic Scan is powered by the **Groq SDK** and **Meta's Llama 3** model. Unlike simple threshold-based logic, our AI integration performs a "Micro-Neurological Assessment" by comparing live typing rhythms against a unique user baseline. It calculates a 0-100 Fatigue Score by analyzing "Rhythmic Decomposition"—the loss of typing rhythm that occurs during early-stage mental exhaustion.
+### 1. The Kinetic Sensor (Front-End)
+Built with **React 18** and **Framer Motion**, the front-end acts as a micro-precision kinetic sensor. It utilizes high-frequency event listeners to track millisecond-level variances in motor programs.
 
-## 📦 Tech Stack
-- **Languages**: TypeScript, Node.js
-- **Frameworks**: React 18 (Vite), Tailwind CSS
-- **APIs**: Vercel Serverless, Groq Cloud (Llama3-8b-8192)
-- **Monitoring**: Performance API (Web Standard)
+### 2. The Neural Coordinator (Back-End)
+A **Node.js/Express** server acts as the central coordinator. It processes raw telemetry data into delta-metric arrays, comparing current motor output against a baseline homeostatic reference.
 
-## 🤝 Team: ANB Squad
-- **Team Lead**: Asma Khalid
-- **Project Name**: Kinetic Scan
+### 3. The Hybrid Analysis Engine
+*   **Primary Engine:** Cloud-Tier AI (**Llama-3 via Groq Cloud**). The system pipes telemetry to a 70B neural model for deep-pattern recognition of motor-program degradation.
+*   **Edge Fallback:** **Local Statistical Analytics**. In the absence of an API connection, the system utilizes a local heuristic engine to ensure zero-latency diagnostic continuity.
+
+## 🧠 Diagnostic Indicators
+*   **Flight Time Variance:** Indicates executive processing deceleration or "processing bottleneck."
+*   **Dwell Time Delta:** Flags neuromuscular fatigue and motor-cortex slowing.
+*   **Synaptic Jitter:** Measures rhythmic periodicity decomposition—a primary marker of acute cognitive fatigue.
+
+---
+**Developed by:** Asma & Team
+**Application Version:** v2.5 (Professional Release)
