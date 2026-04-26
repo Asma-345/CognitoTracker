@@ -1,30 +1,58 @@
 # KINETIC-SCAN: Neurological Telemetry Interface
-> **The Motor-Kinetic Sensory System for Cognitive Fatigue Detection**
+> **Diagnostic Motor-Kinetic Sensory System for Cognitive Fatigue Detection**
 
-[🚀 Live Interactive Demo](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
+[🚀 **Access Live Interface**](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
 
 ---
 
-## 🔬 Project Overview
-KINETIC-SCAN is a high-resolution diagnostic interface designed to detect sub-clinical neurological fatigue. By capturing keyboard interaction telemetry at 1000Hz, the system analyzes the "Kinetic Topology" of a user's motor-cortex execution. It measures synaptic latency (Dwell Time) and sequence processing (Flight Time) to identify cognitive drift before it becomes visible to the human eye.
+## 🔬 Executive Summary
+**KINETIC-SCAN** is a high-precision neurological assessment tool that detects sub-clinical cognitive fatigue through keyboard interaction telemetry. By tracking motor-kinetic events at a resolution of 1ms, the system builds a unique "Kinetic Topology" for every user, identifying synaptic latency and motor-program degradation that precedes visible performance decline.
 
-## 🏗️ System Architecture: The Sensor-to-Neural Pipeline
+---
 
-### 1. The Kinetic Sensor (Front-End)
-Built with **React 18** and **Framer Motion**, the front-end acts as a micro-precision kinetic sensor. It utilizes high-frequency event listeners to track millisecond-level variances in motor programs.
+## 🏗️ System Architecture
+The application is built on a **Hybrid-Edge Sensor Architecture**, ensuring that diagnostic capabilities remain functional regardless of cloud availability.
 
-### 2. The Neural Coordinator (Back-End)
-A **Node.js/Express** server acts as the central coordinator. It processes raw telemetry data into delta-metric arrays, comparing current motor output against a baseline homeostatic reference.
+```mermaid
+graph TD
+    A[User Keyboard Input] -->|1000Hz Sampling| B(Kinetic Sensor Interface)
+    B -->|Telemetry Deltas| C{Neural Coordinator}
+    C -->|Cloud Route| D[Llama-3 Neural Engine]
+    C -->|Offline Route| E[Local Edge Analytics]
+    D -->|Pattern Inference| F[Diagnostic Report]
+    E -->|Statistical Variance| F
+    F -->|Visual Feedback| G[Kinetic Topology Mapping]
+```
 
-### 3. The Hybrid Analysis Engine
-*   **Primary Engine:** Cloud-Tier AI (**Llama-3 via Groq Cloud**). The system pipes telemetry to a 70B neural model for deep-pattern recognition of motor-program degradation.
-*   **Edge Fallback:** **Local Statistical Analytics**. In the absence of an API connection, the system utilizes a local heuristic engine to ensure zero-latency diagnostic continuity.
+### 1. Kinetic Sensor Interface (Front-End)
+*   **Precision Tracking:** Captures `Dwell Time` (key depression duration) and `Flight Time` (latency between keys) with micro-precision.
+*   **Visual Ergonomics:** Utilizes a high-contrast, low-latency UI to prevent secondary cognitive load during testing.
+
+### 2. Neural Coordinator (Back-End)
+*   **Data Normalization:** Translates raw millisecond data into standardized neuro-ergonomic metrics.
+*   **Hybrid Logic:** Dynamically switches between Cloud AI and Local Statistics based on API health.
+
+### 3. Analysis Engines
+*   **Neural Engine:** Leverages Meta's Llama-3 (via Groq Cloud) to analyze rhythmic periodicity and motor-program decomposition.
+*   **Edge Engine:** Implements a mathematical fallback that measures Coefficient of Variation (CoV) shifts against a homeostatic baseline.
+
+---
 
 ## 🧠 Diagnostic Indicators
-*   **Flight Time Variance:** Indicates executive processing deceleration or "processing bottleneck."
-*   **Dwell Time Delta:** Flags neuromuscular fatigue and motor-cortex slowing.
-*   **Synaptic Jitter:** Measures rhythmic periodicity decomposition—a primary marker of acute cognitive fatigue.
+| Metric | Clinical Basis | Significance |
+| :--- | :--- | :--- |
+| **Synaptic Jitter** | Rhythmic Periodicity | Primary indicator of acute cognitive fatigue. |
+| **Dwell Delta** | Neuromuscular Efficiency | Flags motor-cortex slowing or physical strain. |
+| **Flight Latency** | Executive Processing | Measures decision-making deceleration. |
+| **Inhibitory Failure** | Error Correction Rate | Detects loss of fine-motor control. |
 
 ---
-**Developed by:** Asma & Team
-**Application Version:** v2.5 (Professional Release)
+
+## 🎧 Bio-Acoustic Calibration
+The interface integrates a **432Hz Bio-Pulse** harmonic resonator. This sensory focus-anchor is used to stabilize the user's autonomic nervous system prior to assessment, ensuring the highest possible accuracy for the homeostatic baseline.
+
+---
+
+**Development Team:** Asma & Team  
+**Sector:** Neuro-Ergonomics / Cognitive Health  
+**Release:** v2.5.0-Stable
