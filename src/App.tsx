@@ -83,6 +83,7 @@ export default function App() {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [inputText, setInputText] = useState("");
   const [ripples, setRipples] = useState<{ id: number, x: number, y: number }[]>([]);
+  const [showArch, setShowArch] = useState(false);
   const [neuralHeat, setNeuralHeat] = useState<number[]>(new Array(64).fill(0));
 
   // Neural Map Simulation (Degrades over time)
@@ -287,9 +288,9 @@ export default function App() {
   const [userProfile, setUserProfile] = useState("Alpha-1");
 
   const PASSAGES = [
-    "Learning to code is like learning a new language. At first, you might feel a bit slow as you look for the right brackets and semicolons, but soon your fingers develop a rhythm. This first test helps us understand your natural typing beat when you are feeling focused.",
-    "Sometimes, when we have been studying for a long time, our brain starts to wander. We might make more typos or pause a bit longer between letters. This second test will check if your current rhythm has changed from your normal baseline beat.",
-    "Great job! Now we are looking at how your speed and rhythm shifted. Small changes are normal, but big shifts usually mean it's time to step away from the screen and give your brain a little rest before you continue your work."
+    "Learning to code requires high-resolution focus and a consistent mental state. This initial test helps us establish your natural typing beat—the 'baseline' we use to detect changes in your performance later on.",
+    "As we work for long hours, our executive processing speed can begin to slow down and our motor precision might slip. This second test checks your current rhythm to see if it has moved away from your established baseline.",
+    "Great work. The system is now analyzing your motor-kinetic patterns to identify any subtle shifts in performance. This data helps us understand the relationship between your resting state and your current level of cognitive focus."
   ];
 
   return (
@@ -317,10 +318,10 @@ export default function App() {
         <div>
           <h1 className="text-4xl font-bold tracking-tighter flex items-center gap-3">
             <Zap className="text-blue-400 fill-blue-400/20" />
-            Smart Rhythm Tracker <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase px-2 py-1 border border-white/10 rounded">STUDENT EDITION v1.0</span>
+            KINETIC-SCAN <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase px-2 py-1 border border-white/10 rounded">v2.6 Hybrid-Lite</span>
           </h1>
           <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-[0.2em]">
-            Typing Focus Analyzer // Brain & Finger Sync
+            Neural Telemetry Interface // Cognitive Focus Tracking
           </p>
         </div>
         <div className="flex gap-4 items-center">
@@ -350,28 +351,32 @@ export default function App() {
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricBox 
-              label="Key Speed" 
+              label="Dwell Time" 
               value={`${metrics.avgDwellTime.toFixed(1)}ms`} 
               icon={<Timer className="text-blue-400/60" />} 
-              subtext="How fast you press 1 key"
+              subtext="Motor Precision (Key Press)"
+              info="The duration a key is held down. Longer dwell times suggest neurological fatigue."
             />
             <MetricBox 
-              label="Think Gap" 
+              label="Flight Time" 
               value={`${metrics.avgFlightTime.toFixed(1)}ms`} 
               icon={<Brain className="text-indigo-400/60" />} 
-              subtext="Wait time between letters"
+              subtext="Thinking Gap (Processing)"
+              info="The interval between key releases and next presses. Higher values indicate processing 'bottlenecks'."
             />
             <MetricBox 
-              label="Beat Rhythm" 
+              label="Rhythm Jitter" 
               value={`${metrics.stdDevFlightTime.toFixed(1)}ms`} 
               icon={<Activity className="text-pink-400/60" />} 
-              subtext="How steady your beat is"
+              subtext="Consistency of your flow"
+              info="The standard deviation of your flight times. High jitter is a top indicator of acute exhaustion."
             />
              <MetricBox 
-              label="Mistakes" 
+              label="Error Rate" 
               value={`${(metrics.errorRate * 100).toFixed(1)}%`} 
               icon={<AlertTriangle className={cn(metrics.errorRate > 0.05 ? "text-orange-400/60" : "text-emerald-400/60")} />} 
-              subtext="Typos and corrections"
+              subtext="Inhibitory Control (Typos)"
+              info="Frequency of typos and deletions, reflecting a loss of fine motor inhibitory control."
             />
           </div>
 
@@ -612,11 +617,11 @@ export default function App() {
                           </div>
 
                           <div className="p-3 border border-blue-500/10 bg-blue-500/5 rounded font-mono text-[9px] text-blue-300/40">
-                             <p className="mb-1 border-b border-blue-500/10 pb-1 uppercase tracking-widest">System Status</p>
+                             <p className="mb-1 border-b border-blue-500/10 pb-1 uppercase tracking-widest">Neural Watchdog Log</p>
                              <ul className="space-y-1">
-                               <li>[SYS] Typing Sensors: READY</li>
-                               <li>[SYNC] Hands Sync: {Math.random() > 0.5 ? "STABLE" : "VARIANCE"}</li>
-                               <li>[KERNEL] Analysis Method: {analysis?.strategy}</li>
+                               <li>[SYS] Telemetry Pipeline: ACTIVE</li>
+                               <li>[SYNC] Cognitive Sync: {Math.random() > 0.5 ? "STABLE" : "VAR_DETECTED"}</li>
+                               <li>[KERNEL] Inference Method: {analysis?.strategy}</li>
                              </ul>
                           </div>
 
@@ -797,12 +802,22 @@ export default function App() {
   );
 }
 
-function MetricBox({ label, value, icon, subtext }: { label: string, value: string, icon: React.ReactNode, subtext: string }) {
+function MetricBox({ label, value, icon, subtext, info }: { label: string, value: string, icon: React.ReactNode, subtext: string, info?: string }) {
   return (
     <div className="data-grid-item group">
       <div className="flex items-center justify-between mb-4">
         {icon}
-        <span className="text-[10px] font-mono opacity-40 uppercase tracking-widest">{label}</span>
+        <div className="flex items-center gap-1">
+          <span className="text-[10px] font-mono opacity-40 uppercase tracking-widest">{label}</span>
+          {info && (
+            <span className="cursor-help text-blue-400/40 hover:text-blue-400 transition-colors relative group/info">
+              <Info size={10} />
+              <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-[#121214] border border-blue-500/30 text-[9px] normal-case tracking-normal z-50 rounded hidden group-hover/info:block italic leading-relaxed shadow-2xl">
+                {info}
+              </div>
+            </span>
+          )}
+        </div>
       </div>
       <div className="text-3xl font-bold tracking-tighter group-hover:translate-x-1 transition-transform">
         {value}

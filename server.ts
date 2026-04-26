@@ -45,26 +45,29 @@ async function startServer() {
       const groq = new Groq({ apiKey: groqApiKey });
 
       const prompt = `
-        You are a friendly AI Typing Coach. Analyze these two typing sessions to see how focused the student is.
+        You are an Advanced AI Focus Analyst. Analyze these two motor-kinetic telemetry datasets to detect cognitive fatigue patterns.
         
-        SESSION 1 (Rested/Normal):
-        - Key Press Speed: ${baseline.avgDwellTime.toFixed(2)}ms
-        - Thinking Gaps: ${baseline.avgFlightTime.toFixed(2)}ms
-        - Rhythm Consistency: ${baseline.stdDevFlightTime.toFixed(2)}ms
+        BASELINE (Normal State):
+        - Avg Flight Time (FT): ${baseline.avgFlightTime.toFixed(2)}ms (latency between sequences)
+        - Avg Dwell Time (DT): ${baseline.avgDwellTime.toFixed(2)}ms (key strike duration)
+        - Std Dev FT: ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythmic consistency)
         
-        SESSION 2 (Recent Performance):
-        - Key Press Speed: ${current.avgDwellTime.toFixed(2)}ms
-        - Thinking Gaps: ${current.avgFlightTime.toFixed(2)}ms
-        - Rhythm Consistency: ${current.stdDevFlightTime.toFixed(2)}ms
+        CURRENT (Capture State):
+        - Avg Flight Time (FT): ${current.avgFlightTime.toFixed(2)}ms 
+        - Avg Dwell Time (DT): ${current.avgDwellTime.toFixed(2)}ms
+        - Std Dev FT: ${current.stdDevFlightTime.toFixed(2)}ms
         
-        Compare these sets. If the Thinking Gaps or Rhythm Consistency numbers are much higher in Session 2, the student is likely getting tired or distracted.
+        Fatigue Indicators:
+        1. Higher Flight Time = Slower executive processing.
+        2. Higher Dwell Time = Neuromuscular slowing (tired muscles).
+        3. Higher Std Dev = Rhythmic decomposition (brain-finger desync).
         
-        Return a JSON response using simple, encouraging language:
+        Return a JSON response using clear, professional terminology:
         {
-          "fatigueScore": number (0-100, where 100 is very tired),
-          "primaryIndicator": string (e.g., "Slower Thinking Gaps", "Stable Rhythm", "Fast Fingers"),
-          "scientificSummary": string (1-2 sentences explaining why the score is what it is in simple terms),
-          "recommendation": string (actionable student advice like "Take a 5-minute water break" or "You're in the flow zone!")
+          "fatigueScore": number (0-100),
+          "primaryIndicator": string (e.g., "Rhythmic Jitter Detected", "Processing Latency Increase", "Steady Baseline"),
+          "scientificSummary": string (1-2 sentences explaining how the motor-kinetic deltas indicate current cognitive state),
+          "recommendation": string (actionable advice)
         }
       `;
 
