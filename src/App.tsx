@@ -75,6 +75,13 @@ const NeuralTopology = ({ score }: { score: number }) => {
   );
 };
 
+interface SessionRecord {
+  id: string;
+  score: number;
+  indicator: string;
+  timestamp: string;
+}
+
 export default function App() {
   const [testState, setTestState] = useState<TestState>('idle');
   const [timeLeft, setTimeLeft] = useState(TEST_DURATION);
@@ -85,6 +92,29 @@ export default function App() {
   const [ripples, setRipples] = useState<{ id: number, x: number, y: number }[]>([]);
   const [showArch, setShowArch] = useState(false);
   const [neuralHeat, setNeuralHeat] = useState<number[]>(new Array(64).fill(0));
+  const [history, setHistory] = useState<SessionRecord[]>([]);
+
+  // Load history from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('kinetic_history');
+    if (saved) {
+      try {
+        setHistory(JSON.parse(saved));
+      } catch (e) {}
+    }
+  }, []);
+
+  const saveToHistory = (res: AnalysisResult) => {
+    const newRecord: SessionRecord = {
+      id: Date.now().toString(),
+      score: res.fatigueScore,
+      indicator: res.primaryIndicator,
+      timestamp: new Date().toLocaleTimeString()
+    };
+    const newHistory = [newRecord, ...history].slice(0, 5);
+    setHistory(newHistory);
+    localStorage.setItem('kinetic_history', JSON.stringify(newHistory));
+  };
 
   // Neural Map Simulation (Degrades over time)
   useEffect(() => {
@@ -270,6 +300,7 @@ export default function App() {
       });
       const result = await response.json();
       setAnalysis(result);
+      saveToHistory(result); 
       setTestState('finished');
       playBeep();
     } catch (error) {
@@ -288,9 +319,9 @@ export default function App() {
   const [userProfile, setUserProfile] = useState("Alpha-1");
 
   const PASSAGES = [
-    "Learning to code requires high-resolution focus and a consistent mental state. This initial test helps us establish your natural typing beat—the 'baseline' we use to detect changes in your performance later on.",
-    "As we work for long hours, our executive processing speed can begin to slow down and our motor precision might slip. This second test checks your current rhythm to see if it has moved away from your established baseline.",
-    "Great work. The system is now analyzing your motor-kinetic patterns to identify any subtle shifts in performance. This data helps us understand the relationship between your resting state and your current level of cognitive focus."
+    "Learning to code requires significant mental energy and a consistent neurological state. This initial test helps us establish your rested 'baseline'—the reference we use to detect mental fatigue in later sessions.",
+    "As we execute complex tasks, mental fatigue can cause our cognitive processing speed to slow down. This second test checks your current rhythm to see if it has deviated due to mental exhaustion.",
+    "Analysis complete. The system is now evaluating your motor-kinetic patterns for signs of mental fatigue. This data helps we understand the relationship between your resting state and your current level of exhaustion."
   ];
 
   return (
@@ -321,7 +352,7 @@ export default function App() {
             KINETIC-SCAN <span className="text-xs font-mono opacity-40 ml-2 tracking-widest uppercase px-2 py-1 border border-white/10 rounded">v2.6 Hybrid-Lite</span>
           </h1>
           <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-[0.2em]">
-            Neural Telemetry Interface // Cognitive Focus Tracking
+            Neural Telemetry Interface // Mental Fatigue Tracking
           </p>
         </div>
         <div className="flex gap-4 items-center">
@@ -351,31 +382,31 @@ export default function App() {
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricBox 
-              label="Dwell Time" 
+              label="Dwell Latency" 
               value={`${metrics.avgDwellTime.toFixed(1)}ms`} 
               icon={<Timer className="text-blue-400/60" />} 
-              subtext="Motor Precision (Key Press)"
+              subtext="Motor Precision Strike"
               info="The duration a key is held down. Longer dwell times suggest neurological fatigue."
             />
             <MetricBox 
-              label="Flight Time" 
+              label="Flight Latency" 
               value={`${metrics.avgFlightTime.toFixed(1)}ms`} 
               icon={<Brain className="text-indigo-400/60" />} 
-              subtext="Thinking Gap (Processing)"
+              subtext="Cognitive Synthesis Gap"
               info="The interval between key releases and next presses. Higher values indicate processing 'bottlenecks'."
             />
             <MetricBox 
-              label="Rhythm Jitter" 
+              label="Coefficient of Var." 
               value={`${metrics.stdDevFlightTime.toFixed(1)}ms`} 
               icon={<Activity className="text-pink-400/60" />} 
-              subtext="Consistency of your flow"
+              subtext="Rhythmic Periodicity"
               info="The standard deviation of your flight times. High jitter is a top indicator of acute exhaustion."
             />
              <MetricBox 
-              label="Error Rate" 
+              label="Inhibitory Control" 
               value={`${(metrics.errorRate * 100).toFixed(1)}%`} 
               icon={<AlertTriangle className={cn(metrics.errorRate > 0.05 ? "text-orange-400/60" : "text-emerald-400/60")} />} 
-              subtext="Inhibitory Control (Typos)"
+              subtext="Corrective Motor Accuracy"
               info="Frequency of typos and deletions, reflecting a loss of fine motor inhibitory control."
             />
           </div>
@@ -392,9 +423,9 @@ export default function App() {
                   className="flex-1 flex flex-col items-center justify-center text-center p-8"
                 >
                   <Activity size={48} className="text-white/20 mb-6 animate-pulse" />
-                  <h2 className="text-2xl font-semibold mb-2">Check Your Focus</h2>
+                  <h2 className="text-2xl font-semibold mb-2">Mental Fatigue Scan</h2>
                   <p className="text-white/40 text-sm max-w-md mb-8">
-                    Let's see if you're getting tired. First, we'll record your "Rested Beat," then we'll check your current rhythm.
+                    Let's see if you're experiencing mental fatigue. First, we'll record your "Rested Beat," then we'll check your current rhythm.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
                     <button 
@@ -658,26 +689,16 @@ export default function App() {
                          </div>
 
                          <div className="h-[300px] border border-white/5 p-4 bg-black/20 rounded flex-1">
-                          <h4 className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-4">Dwell vs Flight Distribution (Current)</h4>
+                          <h4 className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-4">Real-time Kinetic Stream (Dwell/Flight)</h4>
                           <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={(currentData?.rawDwellTimes || []).slice(-20).map((d, i) => {
-                              const slicedFlights = (currentData?.rawFlightTimes || []).slice(-20);
+                            <LineChart data={(currentData?.rawDwellTimes || []).map((d, i) => {
+                              const flights = currentData?.rawFlightTimes || [];
                               return { 
                                 idx: i, 
                                 dwell: d, 
-                                flight: slicedFlights[i] || 0 
+                                flight: flights[i] || 0 
                               };
                             })}>
-                              <defs>
-                                <linearGradient id="colorDwell" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#818cf8" stopOpacity={0.3}/>
-                                  <stop offset="95%" stopColor="#818cf8" stopOpacity={0}/>
-                                </linearGradient>
-                                <linearGradient id="colorFlight" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.3}/>
-                                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0}/>
-                                </linearGradient>
-                              </defs>
                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                               <XAxis dataKey="idx" hide />
                               <YAxis hide domain={['auto', 'auto']} />
@@ -685,9 +706,9 @@ export default function App() {
                                 contentStyle={{ backgroundColor: '#111', border: '1px solid rgba(255,255,255,0.1)', fontSize: '10px' }}
                                 itemStyle={{ color: '#fff' }}
                               />
-                              <Area type="monotone" dataKey="dwell" stroke="#818cf8" fillOpacity={1} fill="url(#colorDwell)" strokeWidth={2} />
-                              <Area type="monotone" dataKey="flight" stroke="#38bdf8" fillOpacity={1} fill="url(#colorFlight)" strokeWidth={2} />
-                            </AreaChart>
+                              <Line type="monotone" dataKey="dwell" stroke="#818cf8" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+                              <Line type="monotone" dataKey="flight" stroke="#38bdf8" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+                            </LineChart>
                           </ResponsiveContainer>
                         </div>
                       </motion.div>
@@ -703,20 +724,31 @@ export default function App() {
         <div className="lg:col-span-4 space-y-6">
           <div className="data-grid-item bg-white/[0.02] border-white/5">
               <h3 className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-6 flex items-center gap-2">
-                <Binary size={12} /> Kinetic Topology Delta
+                <Binary size={12} /> Mental Fatigue Assessment
               </h3>
               
               <div className="space-y-8">
-                 <ComparisonProgress label="Motor Persistence (Dwell)" baseline={baselineData?.avgDwellTime} current={metrics.avgDwellTime} />
-                 <ComparisonProgress label="Processing Latency (MFL)" baseline={baselineData?.avgFlightTime} current={metrics.avgFlightTime} />
-                 <ComparisonProgress label="Rhythmic Coefficient (CoV)" baseline={baselineData ? (baselineData.stdDevFlightTime / baselineData.avgFlightTime) * 100 : 0} current={(metrics.stdDevFlightTime / (metrics.avgFlightTime || 1)) * 100} />
-                 <ComparisonProgress label="Inhibitory Motor Control" baseline={baselineData ? baselineData.errorRate * 100 : 0} current={metrics.errorRate * 100} inverse />
+                 <ComparisonProgress label="Dwell Latency Offset" baseline={baselineData?.avgDwellTime} current={metrics.avgDwellTime} />
+                 <ComparisonProgress label="Flight Latency Offset" baseline={baselineData?.avgFlightTime} current={metrics.avgFlightTime} />
+                 <ComparisonProgress label="Coeff. of Variance Offset" baseline={baselineData ? (baselineData.stdDevFlightTime / baselineData.avgFlightTime) * 100 : 0} current={(metrics.stdDevFlightTime / (metrics.avgFlightTime || 1)) * 100} />
               </div>
 
               <div className="mt-8 pt-8 border-t border-white/5">
-                 <p className="text-[9px] font-mono text-white/20 uppercase leading-relaxed tracking-wider">
-                   Sensor resolution: 1000Hz // Buffer: Non-blocking // Kernel: PROXIMAL-FLOW v2.
-                 </p>
+                <h4 className="text-[10px] font-mono text-white/40 uppercase mb-4 tracking-widest">Recent Sessions</h4>
+                <div className="space-y-2">
+                  {history.length === 0 && <p className="text-[10px] font-mono text-white/20 italic">No history yet</p>}
+                  {history.map(record => (
+                    <div key={record.id} className="flex justify-between items-center p-2 bg-white/5 border border-white/5 rounded">
+                      <div>
+                        <p className="text-[10px] font-mono text-white/60">{record.timestamp}</p>
+                        <p className="text-[8px] font-mono text-blue-400 uppercase">{record.indicator}</p>
+                      </div>
+                      <div className={cn("text-xs font-bold", record.score > 50 ? "text-red-400" : "text-green-400")}>
+                        {record.score}%
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
            </div>
 

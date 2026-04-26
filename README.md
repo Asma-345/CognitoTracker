@@ -1,12 +1,12 @@
-# KINETIC-SCAN: AI-Powered Focus Tracker
-> **High-Precision Motor-Kinetic Telemetry for Cognitive Performance**
+# KINETIC-SCAN: AI Mental Fatigue Tracker
+> **High-Precision Motor-Kinetic Telemetry for Cognitive & Mental Performance**
 
 [🚀 **Launch Interactive Interface**](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
 
 ---
 
 ## 🔬 What is Kinetic-Scan?
-**Kinetic-Scan** is a sensor-based application that detects how "tired" your brain is by tracking your typing rhythm. While a normal speed test only measures words per minute, Kinetic-Scan looks at the tiny millisecond-level patterns (the "Kinetic Topology") of your fingers to see if your focus is slipping.
+**Kinetic-Scan** is a sensor-based application that detects **Mental Fatigue** by tracking your typing rhythm. While a normal speed test only measures words per minute, Kinetic-Scan looks at the tiny millisecond-level patterns (the "Kinetic Topology") of your fingers to see if your focus is slipping due to mental exhaustion.
 
 ## 🏗️ System Architecture: The Neural Pipeline
 The app operates using a three-stage **Data Pipeline** that moves from your fingers to the cloud.
@@ -33,6 +33,9 @@ The Node.js server takes this raw data and organizes it. It compares your "Norma
 We use a **Hybrid System**:
 *   **AI Tier:** We send your patterns to **Llama-3** (a large neural network) to look for rhythmic drift.
 *   **Edge Tier:** If the AI is busy, a local math engine takes over to analyze your rhythm instantly.
+
+### 4. Session History
+*   **Progress Tracking:** The app now remembers your last 5 sessions (stored locally), allowing students to see how their focus fluctuates over time.
 
 ---
 

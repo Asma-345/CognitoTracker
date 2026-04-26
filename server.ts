@@ -45,24 +45,24 @@ async function startServer() {
       const groq = new Groq({ apiKey: groqApiKey });
 
       const prompt = `
-        You are an Advanced AI Focus Analyst. Analyze these two motor-kinetic telemetry datasets to detect cognitive fatigue patterns.
+        You are an Advanced AI Mental Fatigue Analyst. Analyze these two motor-kinetic telemetry datasets to detect cognitive exhaustion and mental fatigue patterns.
         
         BASELINE (Normal State):
-        - Avg Flight Time (FT): ${baseline.avgFlightTime.toFixed(2)}ms (latency between sequences)
-        - Avg Dwell Time (DT): ${baseline.avgDwellTime.toFixed(2)}ms (key strike duration)
-        - Std Dev FT: ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythmic consistency)
+        - Avg Flight Latency: ${baseline.avgFlightTime.toFixed(2)}ms (latency between sequences)
+        - Avg Dwell Latency: ${baseline.avgDwellTime.toFixed(2)}ms (key strike duration)
+        - Coeff. of Variance (Flight): ${baseline.stdDevFlightTime.toFixed(2)}ms (rhythmic consistency)
         
         CURRENT (Capture State):
-        - Avg Flight Time (FT): ${current.avgFlightTime.toFixed(2)}ms 
-        - Avg Dwell Time (DT): ${current.avgDwellTime.toFixed(2)}ms
-        - Std Dev FT: ${current.stdDevFlightTime.toFixed(2)}ms
+        - Avg Flight Latency: ${current.avgFlightTime.toFixed(2)}ms 
+        - Avg Dwell Latency: ${current.avgDwellTime.toFixed(2)}ms
+        - Coeff. of Variance (Flight): ${current.stdDevFlightTime.toFixed(2)}ms
         
         Fatigue Indicators:
-        1. Higher Flight Time = Slower executive processing.
-        2. Higher Dwell Time = Neuromuscular slowing (tired muscles).
-        3. Higher Std Dev = Rhythmic decomposition (brain-finger desync).
+        1. Higher Flight Latency = Slower executive processing.
+        2. Higher Dwell Latency = Neuromuscular slowing (tired muscles).
+        3. Higher Coeff. of Variance = Rhythmic decomposition (brain-finger desync).
         
-        Return a JSON response using clear, professional terminology:
+        Return a JSON response using professional terminology (Latency, Flight, Dwell, Control, Variance):
         {
           "fatigueScore": number (0-100),
           "primaryIndicator": string (e.g., "Rhythmic Jitter Detected", "Processing Latency Increase", "Steady Baseline"),
@@ -94,7 +94,7 @@ async function startServer() {
       // Dwell time: Muscles/nerves slow down
       if (dwellTimeDelta > 0.15) {
         score += 35;
-        indicators.push("Neuromuscular Slowing");
+        indicators.push("Dwell Latency Drift");
       } else if (dwellTimeDelta > 0.05) {
         score += 15;
       }
@@ -102,7 +102,7 @@ async function startServer() {
       // Flight time: Processing lag
       if (flightTimeDelta > 0.20) {
         score += 30;
-        indicators.push("Cognitive Processing Latency");
+        indicators.push("Flight Latency Increase");
       } else if (flightTimeDelta > 0.10) {
         score += 15;
       }
@@ -110,7 +110,7 @@ async function startServer() {
       // Variance: Loss of rhythmic control (CRITICAL)
       if (stdDevFlightDelta > 0.30) {
         score += 30;
-        indicators.push("Rhythmic Decomposition");
+        indicators.push("Coeff. of Variance Shift");
       } else if (stdDevFlightDelta > 0.15) {
         score += 15;
       }
@@ -118,7 +118,7 @@ async function startServer() {
       // Error Rate
       if (errorRateDelta > 0.10) {
         score += 20;
-        indicators.push("Inhibitory Control Loss");
+        indicators.push("Inhibitory Control Failure");
       }
 
       score = Math.min(Math.max(Math.round(score), 0), 100);
