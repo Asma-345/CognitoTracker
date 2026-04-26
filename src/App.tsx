@@ -691,14 +691,24 @@ export default function App() {
                          <div className="h-[300px] border border-white/5 p-4 bg-black/20 rounded flex-1">
                           <h4 className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-4">Real-time Kinetic Stream (Dwell/Flight)</h4>
                           <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={(currentData?.rawDwellTimes || []).map((d, i) => {
-                              const flights = currentData?.rawFlightTimes || [];
+                            <AreaChart data={(currentData?.rawDwellTimes || []).slice(-30).map((d, i) => {
+                              const flights = (currentData?.rawFlightTimes || []).slice(-30);
                               return { 
                                 idx: i, 
                                 dwell: d, 
                                 flight: flights[i] || 0 
                               };
                             })}>
+                              <defs>
+                                <linearGradient id="colorDwell" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#818cf8" stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor="#818cf8" stopOpacity={0}/>
+                                </linearGradient>
+                                <linearGradient id="colorFlight" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0}/>
+                                </linearGradient>
+                              </defs>
                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                               <XAxis dataKey="idx" hide />
                               <YAxis hide domain={['auto', 'auto']} />
@@ -706,9 +716,9 @@ export default function App() {
                                 contentStyle={{ backgroundColor: '#111', border: '1px solid rgba(255,255,255,0.1)', fontSize: '10px' }}
                                 itemStyle={{ color: '#fff' }}
                               />
-                              <Line type="monotone" dataKey="dwell" stroke="#818cf8" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-                              <Line type="monotone" dataKey="flight" stroke="#38bdf8" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
-                            </LineChart>
+                              <Area type="monotone" dataKey="dwell" stroke="#818cf8" fillOpacity={1} fill="url(#colorDwell)" strokeWidth={2} />
+                              <Area type="monotone" dataKey="flight" stroke="#38bdf8" fillOpacity={1} fill="url(#colorFlight)" strokeWidth={2} />
+                            </AreaChart>
                           </ResponsiveContainer>
                         </div>
                       </motion.div>
@@ -724,7 +734,7 @@ export default function App() {
         <div className="lg:col-span-4 space-y-6">
           <div className="data-grid-item bg-white/[0.02] border-white/5">
               <h3 className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-6 flex items-center gap-2">
-                <Binary size={12} /> Mental Fatigue Assessment
+                <Binary size={12} /> Cognitive Assessment
               </h3>
               
               <div className="space-y-8">

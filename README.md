@@ -1,57 +1,63 @@
-# KINETIC-SCAN: AI Mental Fatigue Tracker
-> **High-Precision Motor-Kinetic Telemetry for Cognitive & Mental Performance**
+# KINETIC-SCAN: AI-Powered Mental Fatigue Telemetry
+> **High-Precision Motor-Kinetic Telemetry for Cognitive Performance Assessment**
 
-[🚀 **Launch Interactive Interface**](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
+[🚀 **Launch Diagnostic Interface**](https://ais-pre-hcato2echpbpyohmo5hmgu-344601355778.asia-southeast1.run.app)
 
 ---
 
-## 🔬 What is Kinetic-Scan?
-**Kinetic-Scan** is a sensor-based application that detects **Mental Fatigue** by tracking your typing rhythm. While a normal speed test only measures words per minute, Kinetic-Scan looks at the tiny millisecond-level patterns (the "Kinetic Topology") of your fingers to see if your focus is slipping due to mental exhaustion.
+## 🔬 Project Overview
+**KINETIC-SCAN** is a specialized neurological assessment interface designed to detect sub-clinical mental fatigue. Unlike traditional speed tests, Kinetic-Scan captures high-resolution "Kinetic Topology"—the millisecond-level interaction patterns between the motor cortex and neuromuscular execution. By identifying subtle shifts in typing rhythm, the system surfaces cognitive exhaustion before performance visibly degrades.
+
+---
 
 ## 🏗️ System Architecture: The Neural Pipeline
-The app operates using a three-stage **Data Pipeline** that moves from your fingers to the cloud.
+The application utilizes a sophisticated sensory-to-inference pipeline to process raw interaction events into actionable diagnostic data.
 
 ```mermaid
 graph TD
-    A[Keyboard Input] -->|1ms Resolution| B(Kinetic Sensor Interface)
-    B -->|Telemetry Data| C{Neural Coordinator}
-    C -->|Cloud Analysis| D[Llama-3 Neural Engine]
-    C -->|Local Analysis| E[Edge Logic Fallback]
-    D -->|Pattern Result| F[Focus Report]
-    E -->|Statistical Result| F
+    A[Human-Machine Interaction] -->|1000Hz Event Sampling| B(Kinetic Sensor Interface)
+    B -->|Interaction Deltas| C{Neural Coordinator}
+    C -->|Cloud-Tier Analysis| D[Llama-3 Neural Engine]
+    C -->|Edge-Tier Analysis| E[Statistical Fallback Engine]
+    D -->|Diagnostic Inference| F[Mental Fatigue Report]
+    E -->|Rhythmic Variance| F
+    F -->|Visual Feedback| G[Kinetic Topology Mapping]
 ```
 
-### 1. The Kinetic Sensor (Front-End)
-The React-based interface acts as a high-speed sensor. Every time a key is touched, the app records:
-*   **Dwell Time:** How long your finger stays on the key.
-*   **Flight Time:** The "think gap" between two key presses.
+### 1. Kinetic Sensor Interface (Front-End)
+Built with **React 18** and **Framer Motion**, the interface acts as a micro-precision kinetic sensor capturing:
+*   **Dwell Latency:** The duration of synaptic execution (key strike duration).
+*   **Flight Latency:** The cognitive synthesis gap (the "think time" between motor sequences).
 
-### 2. The Neural Coordinator (Back-End)
-The Node.js server takes this raw data and organizes it. It compares your "Normal State" (Baseline) to your "Current State" to find the **Fatigue Delta** (the difference).
+### 2. Neural Coordinator (Back-End)
+A **Node.js/Express** coordinator normalizes raw telemetry into standardized neurological metrics. It compares current interaction states against a homeostatic **Baseline Reference** to calculate the fatigue delta.
 
-### 3. The Analysis Engine (AI)
-We use a **Hybrid System**:
-*   **AI Tier:** We send your patterns to **Llama-3** (a large neural network) to look for rhythmic drift.
-*   **Edge Tier:** If the AI is busy, a local math engine takes over to analyze your rhythm instantly.
+### 3. Analysis Engines (Hybrid Intelligence)
+*   **Neural Engine:** Leverages Large Language Models to identify complex non-linear patterns in rhythmic decomposition.
+*   **Edge Engine:** Provides instant feedback using local statistical analytics (Coefficient of Variance) to ensure diagnostic continuity.
 
-### 4. Session History
-*   **Progress Tracking:** The app now remembers your last 5 sessions (stored locally), allowing students to see how their focus fluctuates over time.
+### 4. Progress Management (History)
+*   **Persistence:** Locally cached session history allows for longitudinal tracking of mental fatigue across multiple assessments.
 
 ---
 
-## 📊 Core Performance Metrics
-We focus on three main markers that tell us about your brain's performance:
-*   **Cognitive Speed (Flight Time):** How fast your brain processes the next letter.
-*   **Motor Precision (Dwell Time):** How precisely your muscles execute the press.
-*   **Rhythmic Stability (Jitter):** How steady your typing "beat" is. A shaky beat usually means high fatigue.
+## 📊 Core Measurement Science
+The system evaluates four primary indicators of cognitive state:
+
+| Metric | Scientific Basis | Indicator |
+| :--- | :--- | :--- |
+| **Dwell Latency** | Neuromuscular Efficiency | Slower strikes indicate physical/motor-cortex exhaustion. |
+| **Flight Latency** | Executive Processing | Increased gaps reveal cognitive bottlenecks or "processing lag". |
+| **Coeff. of Variance** | Rhythmic Periodicity | High variance (jitter) denotes a breakdown in motor rhythm. |
+| **Inhibitory Control** | Corrective Accuracy | Error rates reflect the brain's ability to prune motor mistakes. |
 
 ---
 
 ## 🎧 Bio-Acoustic Calibration
-To ensure a fair test, we use a **432Hz "Focus Tone"**. This specific frequency is designed to help you relax and center your focus before you begin the scan, providing a more accurate baseline.
+To minimize environmental noise, the system includes a **432Hz Bio-Pulse** focus anchor. This specific frequency is utilized to stabilize the user's autonomic nervous system prior to the baseline assessment, ensuring maximum diagnostic accuracy.
 
 ---
 
 **Developed by:** Asma & Team  
-**Category:** Neuro-Ergonomics / Educational AI  
-**Version:** 2.6 (Hybrid Pro-Lite)
+**Sector:** Neuro-Ergonomics / Educational AI Research  
+**Version:** 2.6.0-Stable (Professional Release)
